@@ -19,7 +19,7 @@ Article.all = [];
 Article.prototype.toHtml = function() {
   let template = Handlebars.compile($('#article-template').text());
 
-  this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
+  this.daysAgo = parseInt(Math.floor((new Date() - new Date(this.publishedOn))/60/60/24/1000));
   this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
   this.body = marked(this.body);
 
@@ -50,8 +50,8 @@ Article.fetchAll = function() {
     // When rawData is already in localStorage,
     // we can load it with the .loadAll function above,
     // and then render the index page (using the proper method on the articleView object).
-    Article.loadAll(); //TODO: What do we pass in to loadAll()?
-    //TODO: What method do we call to render the index page?
+    Article.loadAll(localStorage.rawData); //DONE: What do we pass in to loadAll()?
+    articleView.initIndexPage(); //DONE: What method do we call to render the index page?
   } else {
     // TODO: When we don't already have the rawData,
     // we need to retrieve the JSON file from the server with AJAX (which jQuery method is best for this?),
